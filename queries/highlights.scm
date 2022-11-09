@@ -67,6 +67,8 @@
   "augroup"
   "return"
   "syntax"
+  "filetype"
+  "source"
   "lua"
   "ruby"
   "perl"
@@ -98,9 +100,20 @@
   "ex"
   "visual"
   "view"
+  "eval"
 ] @keyword
 (map_statement cmd: _ @keyword)
 (command_name) @function.macro
+
+;; Filetype command
+
+(filetype_statement [
+  "detect"
+  "plugin"
+  "indent"
+  "on"
+  "off"
+] @keyword)
 
 ;; Syntax command
 
@@ -179,6 +192,7 @@
 (integer_literal) @number
 (float_literal) @float
 (comment) @comment @spell
+(line_continuation_comment) @comment @spell
 (pattern) @string.special
 (pattern_multi) @string.regex
 (filename) @string
@@ -248,6 +262,9 @@
 ; Options
 ((set_value) @number
  (#match? @number "^[0-9]+(\.[0-9]+)?$"))
+
+(inv_option "!" @operator)
+(set_item "?" @operator)
 
 ((set_item
    option: (option_name) @_option

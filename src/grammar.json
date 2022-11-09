@@ -322,6 +322,10 @@
             },
             {
               "type": "SYMBOL",
+              "name": "eval_statement"
+            },
+            {
+              "type": "SYMBOL",
               "name": "user_command"
             }
           ]
@@ -1721,6 +1725,80 @@
         }
       ]
     },
+    "_filetype_enable": {
+      "type": "FIELD",
+      "name": "sub",
+      "content": {
+        "type": "SYMBOL",
+        "name": "_filetype_state"
+      }
+    },
+    "_filetype_detect": {
+      "type": "FIELD",
+      "name": "sub",
+      "content": {
+        "type": "STRING",
+        "value": "detect"
+      }
+    },
+    "_filetype_plugin": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "sub",
+          "content": {
+            "type": "STRING",
+            "value": "plugin"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "indent"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_filetype_state"
+        }
+      ]
+    },
+    "_filetype_indent": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "sub",
+          "content": {
+            "type": "STRING",
+            "value": "indent"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "plugin"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_filetype_state"
+        }
+      ]
+    },
     "filetype_statement": {
       "type": "SEQ",
       "members": [
@@ -1740,46 +1818,20 @@
               "type": "CHOICE",
               "members": [
                 {
-                  "type": "SEQ",
-                  "members": [
-                    {
-                      "type": "CHOICE",
-                      "members": [
-                        {
-                          "type": "STRING",
-                          "value": "plugin"
-                        },
-                        {
-                          "type": "BLANK"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "CHOICE",
-                      "members": [
-                        {
-                          "type": "STRING",
-                          "value": "indent"
-                        },
-                        {
-                          "type": "BLANK"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "ALIAS",
-                      "content": {
-                        "type": "SYMBOL",
-                        "name": "_filetype_state"
-                      },
-                      "named": true,
-                      "value": "state"
-                    }
-                  ]
+                  "type": "SYMBOL",
+                  "name": "_filetype_enable"
                 },
                 {
-                  "type": "STRING",
-                  "value": "detect"
+                  "type": "SYMBOL",
+                  "name": "_filetype_detect"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_filetype_plugin"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_filetype_indent"
                 }
               ]
             },
@@ -3287,15 +3339,36 @@
       ]
     },
     "inv_option": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "_inv"
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_inv"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "option_name"
+            }
+          ]
         },
         {
-          "type": "SYMBOL",
-          "name": "option_name"
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "option_name"
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "STRING",
+                "value": "!"
+              }
+            }
+          ]
         }
       ]
     },
@@ -7891,6 +7964,24 @@
         ]
       }
     },
+    "eval_statement": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_eval"
+          },
+          "named": false,
+          "value": "eval"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_expression"
+        }
+      ]
+    },
     "filename": {
       "type": "SEQ",
       "members": [
@@ -7903,7 +7994,7 @@
             },
             {
               "type": "PATTERN",
-              "value": "[\\/._+,#$%~=-]"
+              "value": "[/._+,#$%~=-]"
             },
             {
               "type": "PATTERN",
@@ -7944,7 +8035,7 @@
                 "type": "IMMEDIATE_TOKEN",
                 "content": {
                   "type": "PATTERN",
-                  "value": "[\\/._+,#$%~=-]"
+                  "value": "[/._+,#$%~=-]"
                 }
               },
               {
@@ -8227,7 +8318,7 @@
     },
     "register": {
       "type": "PATTERN",
-      "value": "@[\"0-9a-zA-Z:.%#=*+_\\/-@]"
+      "value": "@[\"0-9a-zA-Z:.%#=*+_/-@]"
     },
     "option": {
       "type": "SEQ",
@@ -12593,6 +12684,10 @@
       "name": "_line_continuation"
     },
     {
+      "type": "SYMBOL",
+      "name": "line_continuation_comment"
+    },
+    {
       "type": "PATTERN",
       "value": "[\\t ]"
     }
@@ -12665,6 +12760,10 @@
     {
       "type": "SYMBOL",
       "name": "comment"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "line_continuation_comment"
     },
     {
       "type": "SYMBOL",
@@ -13041,6 +13140,10 @@
     {
       "type": "SYMBOL",
       "name": "_view"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_eval"
     },
     {
       "type": "SYMBOL",
